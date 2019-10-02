@@ -1,0 +1,12 @@
+{
+  "name": "scam",
+  "version": "1.0.0",
+  "description": "SoundCloud Account Manager Extension",
+  "author": "reid",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "scam",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "SoundCloud Account Manager: Quickly switch between multiple SoundCloud accounts.",
+  "homepage_url": "https://github.com/nihilist/scam",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://soundcloud.com/*"],
+      "js": ["src/js.cookie-2.2.1.min.js", "src/switcher.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "cookies",
+    "https://soundcloud.com/*"
+  ]
+}
