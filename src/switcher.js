@@ -13,7 +13,7 @@ const saveSession = (username, cookie) => {
   }
 };
 
-const deleteSession = (username) => { // eslint-disable-line no-unused-vars
+const deleteSession = (username) => {
   if (localStorage.hasOwnProperty('sc-accounts')) {
     const obj = JSON.parse(localStorage.getItem('sc-accounts'));
     delete obj[username];
@@ -22,11 +22,11 @@ const deleteSession = (username) => { // eslint-disable-line no-unused-vars
 };
 
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
+const getCurrentUser = () => sel('.header__userNavUsernameButton').href.replace('https://soundcloud.com/', '');
 
 const saveCurrentSession = () => {
-  let username = sel('.header__userNavUsernameButton').href;
+  const username = getCurrentUser();
   const cookie = Cookies.get('oauth_token');
-  username = username.replace('https://soundcloud.com/', '');
   saveSession(username, cookie);
 };
 
@@ -41,10 +41,12 @@ const injectSwitcher = () => {
     const list = document.createElement('ul');
     list.setAttribute('class', 'profileMenu__list sc-list-nostyle');
     Object.keys(accounts).forEach((account, index) => {
+      if (account === getCurrentUser()) return;
       const wrapper = document.createElement('div');
       const li = document.createElement('li');
-      li.setAttribute('class', 'profileMenu__item');
       const link = document.createElement('a');
+
+      li.setAttribute('class', 'profileMenu__item');
       link.setAttribute('class', 'profileMenu__link profileMenu__profile');
       link.innerText = account;
       link.id = 'switch-account';
@@ -54,6 +56,7 @@ const injectSwitcher = () => {
       link.style.width = '50%';
 
       const delBtn = document.createElement('a');
+
       delBtn.setAttribute('class', 'profileMenu__profile');
       delBtn.innerText = '×';
       delBtn.id = 'delete-account';
@@ -63,8 +66,10 @@ const injectSwitcher = () => {
       delBtn.style.display = 'inline-block';
       
       delBtn.onclick = (event) => {
-      	deleteSession(event.target.dataset.user);
-      	event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+        if (confirm(`Are you sure you want to remove the '${event.target.dataset.user}' account?`)) { // eslint-disable-line
+          deleteSession(event.target.dataset.user);
+          event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+        }
       };
 
       link.onclick = (event) => {
