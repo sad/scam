@@ -63,7 +63,7 @@ const injectSwitcher = () => {
 
     addBtn.appendChild(addLink);
     list.appendChild(addBtn);
-    Object.keys(accounts).forEach((account, index) => {
+    Object.keys(accounts).forEach((account) => {
       if (account === getCurrentUser()) return;
       const wrapper = document.createElement('div');
       const li = document.createElement('li');
@@ -103,9 +103,8 @@ const injectSwitcher = () => {
       wrapper.appendChild(delBtn);
       li.appendChild(wrapper);
       list.appendChild(li);
-
     });
-    
+
     sel('.profileMenu').appendChild(list);
   }
 };
