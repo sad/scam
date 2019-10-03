@@ -41,6 +41,7 @@ const injectSwitcher = () => {
     const list = document.createElement('ul');
     list.setAttribute('class', 'profileMenu__list sc-list-nostyle');
     Object.keys(accounts).forEach((account, index) => {
+      const wrapper = document.createElement('div');
       const li = document.createElement('li');
       li.setAttribute('class', 'profileMenu__item');
       const link = document.createElement('a');
@@ -49,12 +50,30 @@ const injectSwitcher = () => {
       link.id = 'switch-account';
       link.dataset.user = account;
       link.href = '#';
+      link.style.display = 'inline-block';
+      link.style.width = '50%';
+
+      const delBtn = document.createElement('a');
+      delBtn.setAttribute('class', 'profileMenu__profile');
+      delBtn.innerText = '×';
+      delBtn.id = 'delete-account';
+      delBtn.dataset.user = account;
+      delBtn.href = '#';
+      delBtn.style.padding = '5px';
+      delBtn.style.display = 'inline-block';
+      
+      delBtn.onclick = (event) => {
+      	deleteSession(event.target.dataset.user);
+      	event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+      };
 
       link.onclick = (event) => {
         switchSession(event.target.dataset.user);
       };
 
-      li.appendChild(link);
+      wrapper.appendChild(link);
+      wrapper.appendChild(delBtn);
+      li.appendChild(wrapper);
       list.appendChild(li);
 
       if (index >= Object.keys(accounts).length - 1) {
