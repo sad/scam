@@ -21,7 +21,7 @@ const deleteSession = (username) => {
   }
 };
 
-const addAccount = () => {
+const forceLogout = () => {
   Cookies.remove('oauth_token');
   chrome.runtime.sendMessage('forceLogout', () => {
     window.location = 'https://soundcloud.com/signin';
@@ -58,7 +58,7 @@ const injectSwitcher = () => {
 
 
     addBtn.onclick = () => {
-      addAccount();
+      forceLogout();
     };
 
     addBtn.appendChild(addLink);
