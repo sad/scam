@@ -58,13 +58,13 @@ const injectSwitcher = () => {
       const delBtn = document.createElement('a');
 
       delBtn.setAttribute('class', 'profileMenu__profile');
-      delBtn.innerText = '×';
+      delBtn.innerHTML = '&times;';
       delBtn.id = 'delete-account';
       delBtn.dataset.user = account;
       delBtn.href = '#';
       delBtn.style.padding = '5px';
       delBtn.style.display = 'inline-block';
-      
+
       delBtn.onclick = (event) => {
         if (confirm(`Are you sure you want to remove the '${event.target.dataset.user}' account?`)) { // eslint-disable-line
           deleteSession(event.target.dataset.user);
