@@ -31,10 +31,8 @@ const saveCurrentSession = () => {
 };
 
 const switchSession = (user) => {
-  if (!user === sel('.header__userNavUsernameButton').href) {
-    Cookies.set('oauth_token', getSession(user));
-    setTimeout(location.reload, 300);
-  }
+  Cookies.set('oauth_token', getSession(user));
+  location.reload();
 };
 
 const injectSwitcher = () => {
