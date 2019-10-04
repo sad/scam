@@ -87,8 +87,13 @@ const injectSwitcher = () => {
       link.id = 'switch-account';
       link.dataset.user = account;
       link.href = '#';
+      link.title = account;
       link.style.display = 'inline-block';
       link.style.width = '50%';
+      link.style.textOverflow = 'ellipsis';
+      link.style.overflow = 'hidden';
+      link.style.verticalAlign = 'middle';
+      
 
       const delBtn = document.createElement('a');
 
@@ -99,6 +104,7 @@ const injectSwitcher = () => {
       delBtn.href = '#';
       delBtn.style.padding = '5px';
       delBtn.style.display = 'inline-block';
+      delBtn.style.verticalAlign = 'middle';
 
       delBtn.onclick = (event) => {
         if (confirm(`Are you sure you want to remove the '${event.target.dataset.user}' account?`)) { // eslint-disable-line
