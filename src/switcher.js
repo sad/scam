@@ -36,11 +36,13 @@ const saveCurrentSession = () => {
 };
 
 const switchSession = (user) => {
+  saveCurrentSession();
   Cookies.set('oauth_token', getSession(user));
   location.reload();
 };
 
 const forceLogout = () => {
+  saveCurrentSession();
   Cookies.remove('oauth_token');
   chrome.runtime.sendMessage('forceLogout', () => {
     window.location = 'https://soundcloud.com/signin';
@@ -48,7 +50,6 @@ const forceLogout = () => {
 };
 
 const injectSwitcher = () => {
-  saveCurrentSession();
   if (localStorage.hasOwnProperty('sc-accounts')) {
     const accounts = JSON.parse(localStorage.getItem('sc-accounts'));
     const list = document.createElement('ul');
