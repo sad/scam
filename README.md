@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Preview" src="https://i.imgur.com/BKXKIEel.png"/>
+  <img alt="Preview" src="https://i.imgur.com/BKXKIEe.png"/>
 </p>
 
 # scam
