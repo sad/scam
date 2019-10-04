@@ -89,7 +89,7 @@ const injectSwitcher = () => {
       link.style.textOverflow = 'ellipsis';
       link.style.overflow = 'hidden';
       link.style.verticalAlign = 'middle';
-      
+
 
       const delBtn = document.createElement('a');
 
@@ -118,7 +118,6 @@ const injectSwitcher = () => {
       li.appendChild(wrapper);
       list.appendChild(li);
     });
-
     sel('.profileMenu').appendChild(list);
   }
 };
