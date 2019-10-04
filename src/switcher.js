@@ -1,4 +1,3 @@
-/* global Cookies */
 const sel = (selector) => document.querySelector(selector);
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
 const getCurrentUser = () => {
@@ -27,21 +26,25 @@ const deleteSession = (username) => {
 
 const saveCurrentSession = () => {
   const username = getCurrentUser();
-  const cookie = Cookies.get('oauth_token');
-  if (username) saveSession(username, cookie);
+  chrome.runtime.sendMessage({ name: 'getCookie', data: { name: 'oauth_token' } }, (data) => {
+    const cookie = data.value;
+    if (username) saveSession(username, cookie);
+  });
 };
 
 const switchSession = (user) => {
   saveCurrentSession();
-  Cookies.set('oauth_token', getSession(user));
-  location.reload();
+  chrome.runtime.sendMessage({ name: 'setCookie', data: { name: 'oauth_token', value: getSession(user) } }, () => {
+    location.reload();
+  });
 };
 
 const forceLogout = () => {
   saveCurrentSession();
-  Cookies.remove('oauth_token');
-  chrome.runtime.sendMessage('forceLogout', () => {
-    window.location = 'https://soundcloud.com/signin';
+  chrome.runtime.sendMessage({ name: 'removeCookie', data: { name: 'oauth_token' } }, () => {
+    chrome.runtime.sendMessage({ name: 'forceLogout' }, () => {
+      window.location = 'https://soundcloud.com/signin';
+    });
   });
 };
 
