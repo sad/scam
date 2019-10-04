@@ -79,10 +79,6 @@ const injectSwitcher = () => {
 
       li.setAttribute('class', 'profileMenu__item');
       link.setAttribute('class', 'profileMenu__link profileMenu__profile');
-      if (account.length >= 13) {
-        // prevent text overflowing into delete button
-        link.setAttribute('style', 'overflow: hidden; margin-bottom: -12px; text-overflow: ellipsis');
-      }
       link.innerHTML = account;
       link.id = 'switch-account';
       link.dataset.user = account;
