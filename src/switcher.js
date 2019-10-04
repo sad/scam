@@ -10,15 +10,11 @@ const getCurrentUser = () => {
 };
 
 const saveSession = (username, cookie) => {
-  let obj = {};
-  if (localStorage.hasOwnProperty('sc-accounts')) {
-    obj = JSON.parse(localStorage.getItem('sc-accounts'));
-    obj[username] = cookie;
-    localStorage.setItem('sc-accounts', JSON.stringify(obj));
-  } else {
-    obj[username] = cookie;
-    localStorage.setItem('sc-accounts', JSON.stringify(obj));
-  }
+  const obj = localStorage.hasOwnProperty('sc-accounts') ? JSON.parse(localStorage.getItem('sc-accounts')) : {};
+  const storedCookie = Object.keys(obj).find((user) => obj[user] === cookie);
+  if (storedCookie && username !== storedCookie) delete obj[storedCookie];
+  obj[username] = cookie;
+  localStorage.setItem('sc-accounts', JSON.stringify(obj));
 };
 
 const deleteSession = (username) => {
