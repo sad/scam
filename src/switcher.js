@@ -79,7 +79,7 @@ const injectSwitcher = () => {
 
       li.setAttribute('class', 'profileMenu__item');
       link.setAttribute('class', 'profileMenu__link profileMenu__profile');
-      link.innerHTML = account;
+      link.innerText = account;
       link.id = 'switch-account';
       link.dataset.user = account;
       link.href = '#';
