@@ -1,5 +1,13 @@
 /* global Cookies */
 const sel = (selector) => document.querySelector(selector);
+const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
+const getCurrentUser = () => {
+  if (sel('.header__userNavUsernameButton') !== null) {
+    return sel('.header__userNavUsernameButton').href.replace('https://soundcloud.com/', '');
+  }
+
+  return false;
+};
 
 const saveSession = (username, cookie) => {
   let obj = {};
@@ -21,20 +29,10 @@ const deleteSession = (username) => {
   }
 };
 
-const forceLogout = () => {
-  Cookies.remove('oauth_token');
-  chrome.runtime.sendMessage('forceLogout', () => {
-    window.location = 'https://soundcloud.com/signin';
-  });
-};
-
-const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
-const getCurrentUser = () => sel('.header__userNavUsernameButton').href.replace('https://soundcloud.com/', '');
-
 const saveCurrentSession = () => {
   const username = getCurrentUser();
   const cookie = Cookies.get('oauth_token');
-  saveSession(username, cookie);
+  if (username) saveSession(username, cookie);
 };
 
 const switchSession = (user) => {
@@ -42,7 +40,15 @@ const switchSession = (user) => {
   location.reload();
 };
 
+const forceLogout = () => {
+  Cookies.remove('oauth_token');
+  chrome.runtime.sendMessage('forceLogout', () => {
+    window.location = 'https://soundcloud.com/signin';
+  });
+};
+
 const injectSwitcher = () => {
+  saveCurrentSession();
   if (localStorage.hasOwnProperty('sc-accounts')) {
     const accounts = JSON.parse(localStorage.getItem('sc-accounts'));
     const list = document.createElement('ul');
@@ -51,7 +57,7 @@ const injectSwitcher = () => {
     const addBtn = document.createElement('li');
     addBtn.setAttribute('class', 'profileMenu__item');
     const addLink = document.createElement('a');
-    addLink.setAttribute('class', 'profileMenu__link profileMenu__profile');
+    addLink.setAttribute('class', 'profileMenu__link profileMenu__friends');
     addLink.innerText = 'Add account';
     addLink.id = 'add-account';
     addLink.href = '#';
@@ -63,8 +69,10 @@ const injectSwitcher = () => {
 
     addBtn.appendChild(addLink);
     list.appendChild(addBtn);
+
     Object.keys(accounts).forEach((account) => {
       if (account === getCurrentUser()) return;
+
       const wrapper = document.createElement('div');
       const li = document.createElement('li');
       const link = document.createElement('a');
@@ -119,10 +127,9 @@ const menuObserver = new MutationObserver((mutations) => {
 });
 
 const init = () => {
+  const observerOptions = { childList: true, subtree: true };
+  menuObserver.observe(document.body, observerOptions);
   saveCurrentSession();
-  menuObserver.observe(document.body, {
-    childList: true, subtree: true,
-  });
 };
 
 init();
