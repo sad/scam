@@ -16,8 +16,13 @@
       "run_at": "document_end"
     }
   ],
+  "background": {
+    "scripts": ["src/background.js"],
+    "persistent": false
+  },
   "permissions": [
     "cookies",
-    "https://soundcloud.com/*"
+    "https://soundcloud.com/*",
+    "https://api-auth.soundcloud.com/*"
   ]
 }
