@@ -1,10 +1,15 @@
 # scam
-![airbnb eslint style](https://camo.githubusercontent.com/1c5c800fbdabc79cfaca8c90dd47022a5b5c7486/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f64652532307374796c652d616972626e622d627269676874677265656e2e7376673f7374796c653d666c61742d737175617265)
+[![chrome webstore](https://img.shields.io/chrome-web-store/v/pjjmnjpdamiodphjhekmbdgnbegndmkc?style=flat-square)](https://chrome.google.com/webstore/detail/pjjmnjpdamiodphjhekmbdgnbegndmkc)
+[![airbnb eslint style](https://img.shields.io/static/v1?label=code%20style&message=airbnb&color=success&style=flat-square)](https://github.com/airbnb/javascript)
+[![mit licensed](https://img.shields.io/static/v1?label=license&message=mit&color=success&style=flat-square)](https://github.com/nihilist/scam/blob/master/LICENSE.md)
 
 **scam** (the **soundcloud account manager**) is a simple account switching extension for [SoundCloud](https://soundcloud.com). it's currently in development – pull requests welcome. new accounts are automatically added every time you log in. you can find them under the username dropdown.
 
+you can find it in the Chrome Web Store [**here**](https://chrome.google.com/webstore/detail/pjjmnjpdamiodphjhekmbdgnbegndmkc).
+
 ### contributing
 please use `yarn` or your favourite package manager to install the airbnb eslint base after cloning the repo.
-### todo
-- remove cookies.js dependency
-- check if token is already stored before storing it regardless of username
+
+<p align="center">
+  <img alt="Preview" src="https://i.imgur.com/BKXKIEe.png"/>
+</p>
