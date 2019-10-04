@@ -26,7 +26,7 @@ const deleteSession = (username) => {
 
 const saveCurrentSession = () => {
   const username = getCurrentUser();
-  chrome.runtime.sendMessage({ name: 'getCookie', data: { name: 'oauth_token' } }, (data) => {
+  chrome.runtime.sendMessage({ method: 'getCookie', data: { name: 'oauth_token' } }, (data) => {
     const cookie = data.value;
     if (username) saveSession(username, cookie);
   });
@@ -34,15 +34,15 @@ const saveCurrentSession = () => {
 
 const switchSession = (user) => {
   saveCurrentSession();
-  chrome.runtime.sendMessage({ name: 'setCookie', data: { name: 'oauth_token', value: getSession(user) } }, () => {
+  chrome.runtime.sendMessage({ method: 'setCookie', data: { name: 'oauth_token', value: getSession(user) } }, () => {
     location.reload();
   });
 };
 
 const forceLogout = () => {
   saveCurrentSession();
-  chrome.runtime.sendMessage({ name: 'removeCookie', data: { name: 'oauth_token' } }, () => {
-    chrome.runtime.sendMessage({ name: 'forceLogout' }, () => {
+  chrome.runtime.sendMessage({ method: 'removeCookie', data: { name: 'oauth_token' } }, () => {
+    chrome.runtime.sendMessage({ method: 'forceLogout' }, () => {
       window.location = 'https://soundcloud.com/signin';
     });
   });
@@ -87,8 +87,13 @@ const injectSwitcher = () => {
       link.id = 'switch-account';
       link.dataset.user = account;
       link.href = '#';
+      link.title = account;
       link.style.display = 'inline-block';
       link.style.width = '50%';
+      link.style.textOverflow = 'ellipsis';
+      link.style.overflow = 'hidden';
+      link.style.verticalAlign = 'middle';
+      
 
       const delBtn = document.createElement('a');
 
@@ -99,6 +104,7 @@ const injectSwitcher = () => {
       delBtn.href = '#';
       delBtn.style.padding = '5px';
       delBtn.style.display = 'inline-block';
+      delBtn.style.verticalAlign = 'middle';
 
       delBtn.onclick = (event) => {
         if (confirm(`Are you sure you want to remove the '${event.target.dataset.user}' account?`)) { // eslint-disable-line
