@@ -21,6 +21,13 @@ const deleteSession = (username) => {
   }
 };
 
+const forceLogout = () => {
+  Cookies.remove('oauth_token');
+  chrome.runtime.sendMessage('forceLogout', () => {
+    window.location = 'https://soundcloud.com/signin';
+  });
+};
+
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
 const getCurrentUser = () => sel('.header__userNavUsernameButton').href.replace('https://soundcloud.com/', '');
 
@@ -40,7 +47,23 @@ const injectSwitcher = () => {
     const accounts = JSON.parse(localStorage.getItem('sc-accounts'));
     const list = document.createElement('ul');
     list.setAttribute('class', 'profileMenu__list sc-list-nostyle');
-    Object.keys(accounts).forEach((account, index) => {
+
+    const addBtn = document.createElement('li');
+    addBtn.setAttribute('class', 'profileMenu__item');
+    const addLink = document.createElement('a');
+    addLink.setAttribute('class', 'profileMenu__link profileMenu__profile');
+    addLink.innerText = 'Add account';
+    addLink.id = 'add-account';
+    addLink.href = '#';
+
+
+    addBtn.onclick = () => {
+      forceLogout();
+    };
+
+    addBtn.appendChild(addLink);
+    list.appendChild(addBtn);
+    Object.keys(accounts).forEach((account) => {
       if (account === getCurrentUser()) return;
       const wrapper = document.createElement('div');
       const li = document.createElement('li');
@@ -80,11 +103,9 @@ const injectSwitcher = () => {
       wrapper.appendChild(delBtn);
       li.appendChild(wrapper);
       list.appendChild(li);
-
-      if (index >= Object.keys(accounts).length - 1) {
-        sel('.profileMenu').appendChild(list);
-      }
     });
+
+    sel('.profileMenu').appendChild(list);
   }
 };
 
