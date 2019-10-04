@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": ["https://soundcloud.com/*"],
-      "js": ["src/js.cookie-2.2.1.min.js", "src/switcher.js"],
+      "js": ["src/switcher.js"],
       "run_at": "document_end"
     }
   ],
