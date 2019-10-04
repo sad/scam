@@ -8,7 +8,8 @@ a .crx file will be provided in the releases section, and the extension will be 
 ### contributing
 please use `yarn` or your favourite package manager to install the airbnb eslint base after cloning the repo.
 ### todo
-- account deletion
 - code cleanup (remove cookies.js dependency)
 - proper extension icons
 - check for when user changes username(?)
+- fix username overflowing in switcher (text-overflow: ellipsis)
+- fix switcher not rendering on first login
