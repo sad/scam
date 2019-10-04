@@ -3,13 +3,8 @@
 
 **scam** (the **soundcloud account manager**) is a simple account switching extension for [SoundCloud](https://soundcloud.com). it's currently in development – pull requests welcome. new accounts are automatically added every time you log in. you can find them under the username dropdown.
 
-a .crx file will be provided in the releases section, and the extension will be uploaded to the chrome webstore shortly.
-
 ### contributing
 please use `yarn` or your favourite package manager to install the airbnb eslint base after cloning the repo.
 ### todo
-- code cleanup (remove cookies.js dependency)
-- proper extension icons
-- check for when user changes username(?)
-- fix username overflowing in switcher (text-overflow: ellipsis)
-- fix switcher not rendering on first login
+- remove cookies.js dependency
+- check if token is already stored before storing it regardless of username
