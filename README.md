@@ -1,6 +1,7 @@
 <p align="center">
   <img alt="Preview" src="https://i.imgur.com/BKXKIEel.png"/>
 </p>
+
 # scam
 [![chrome webstore](https://img.shields.io/chrome-web-store/v/pjjmnjpdamiodphjhekmbdgnbegndmkc?style=flat-square)](https://chrome.google.com/webstore/detail/pjjmnjpdamiodphjhekmbdgnbegndmkc)
 [![airbnb eslint style](https://img.shields.io/static/v1?label=code%20style&message=airbnb&color=success&style=flat-square)](https://github.com/airbnb/javascript)
