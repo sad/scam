@@ -1,4 +1,6 @@
-chrome.extension.onMessage.addListener((request, sender, sendResponse) => {
+const emitter = chrome.extension.onMessage ? chrome.extension.onMessage : browser.runtime.onMessage;
+
+emitter.addListener((request, sender, sendResponse) => {
   if (request.method === 'forceLogout') {
     chrome.cookies.remove({
       url: 'https://api-auth.soundcloud.com/connect/',

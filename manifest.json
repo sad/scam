@@ -11,7 +11,7 @@
     {
       "matches": ["https://soundcloud.com/*"],
       "js": ["src/switcher.js"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
   ],
   "background": {
