@@ -30,6 +30,25 @@ emitter.addListener((request, sender, sendResponse) => {
     };
     xhr.open('POST', 'https://api-auth.soundcloud.com/connect/session');
     xhr.send(JSON.stringify({ session: { access_token: request.data.cookie } }));
+  } else if (request.method === 'refreshCookie') {
+    const fetchNewCookie = () => {
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          sendResponse(JSON.parse(xhr.responseText).session.access_token);
+        }
+      };
+      xhr.open('POST', 'https://api-auth.soundcloud.com/connect/session/token');
+      xhr.send('null');
+    };
+    if (request.data && request.data.cookie) {
+      chrome.cookies.set({
+        url: 'https://api-auth.soundcloud.com/connect/',
+        name: '_session_auth_key',
+        value: request.data.cookie,
+        secure: true,
+      }, () => fetchNewCookie());
+    } else fetchNewCookie();
   }
 
   return true;
