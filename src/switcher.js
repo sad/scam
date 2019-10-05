@@ -118,7 +118,7 @@ const injectSwitcher = () => {
       li.appendChild(wrapper);
       list.appendChild(li);
     });
-    sel('.profileMenu').appendChild(list);
+    if (sel('.profileMenu')) sel('.profileMenu').appendChild(list);
   }
 };
 
