@@ -23,6 +23,13 @@ emitter.addListener((request, sender, sendResponse) => {
       url: 'https://soundcloud.com/',
       name: request.data.name,
     }, (details) => sendResponse(details));
+  } else if (request.method === 'validateCookie') {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) sendResponse(xhr.status === 200);
+    };
+    xhr.open('POST', 'https://api-auth.soundcloud.com/connect/session');
+    xhr.send(JSON.stringify({ session: { access_token: request.data.cookie } }));
   }
 
   return true;
