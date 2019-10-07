@@ -134,8 +134,8 @@ const injectLoggedOutSwitcher = () => {
     publicSignIn.appendChild(scamBtn);
     const firstOption = document.createElement('option');
     firstOption.innerText = 'Accounts';
-    firstOption.disabled = 'true';
-    firstOption.selected = 'true';
+    firstOption.disabled = true;
+    firstOption.selected = true;
     accountSelector.appendChild(firstOption);
     Object.keys(accounts).forEach((accountName) => {
       const accountEl = document.createElement('option');

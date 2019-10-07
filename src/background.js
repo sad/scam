@@ -47,6 +47,7 @@ emitter.addListener((request, sender, sendResponse) => {
         name: '_session_auth_key',
         value: request.data.cookie,
         secure: true,
+        SameSiteStatus: 'no_restriction'
       }, () => fetchNewCookie());
     } else fetchNewCookie();
   }
