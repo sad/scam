@@ -26,7 +26,6 @@
   },
   "permissions": [
     "cookies",
-    "storage",
     "https://soundcloud.com/*",
     "https://api-auth.soundcloud.com/*",
     "https://secure.soundcloud.com/*"
