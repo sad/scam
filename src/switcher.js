@@ -2,7 +2,7 @@ const sel = (selector) => document.querySelector(selector);
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
 const getCurrentUser = () => {
   if (sel('.header__userNavUsernameButton') !== null) {
-    return sel('.header__userNavUsernameButton').href.replace('https://soundcloud.com/', '');
+    return new URL(sel('.header__userNavUsernameButton').href).pathname.substr(1);
   }
 
   return false;
@@ -122,20 +122,38 @@ const injectSwitcher = () => {
   }
 };
 
+const passSessions = (element) => {
+  const obj = localStorage.hasOwnProperty('sc-accounts') ? JSON.parse(localStorage.getItem('sc-accounts')) : {};
+  element.contentWindow.postMessage(['_scam_sessions', obj], '*');
+};
+
 const menuObserver = new MutationObserver((mutations) => {
   for (const mutation of mutations) {
     const addedNodes = Array.from(mutation.addedNodes);
     if (addedNodes.includes(sel('.dropdownMenu')) || addedNodes.includes(sel('.profileMenu__list'))) {
       injectSwitcher();
     }
+    if (mutation.target.classList && [...mutation.target.classList].includes('header__userNavUsernameButton')) {
+      saveCurrentSession();
+    }
+
+    addedNodes.forEach((node) => {
+      if (node.querySelector && node.querySelector('.webAuthContainer iframe')) {
+        const iframe = node.querySelector('.webAuthContainer iframe');
+        iframe.onload = () => {
+          passSessions(iframe);
+        };
+      }
+    });
   }
 });
 
-window.addEventListener("message", (message) => {
-  const { origin, data } = message
-  if(!origin.endsWith('.soundcloud.com')) return;
-  if(data === '_scam_reload') {
-    window.location.reload();
+window.addEventListener('message', (message) => {
+  const { origin, data } = message;
+  if (!origin.endsWith('.soundcloud.com')) return;
+
+  if (data === '_scam_reload') {
+    window.location.reload(true);
   }
 }, false);
 
