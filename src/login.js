@@ -1,31 +1,7 @@
 const sel = (selector) => document.querySelector(selector);
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
-const getCurrentUser = () => {
-  if (sel('.header__userNavUsernameButton') !== null) {
-    return sel('.header__userNavUsernameButton').href.replace('https://soundcloud.com/', '');
-  }
-
-  return null;
-};
-
-const saveSession = (username, cookie) => {
-  const obj = localStorage.hasOwnProperty('sc-accounts') ? JSON.parse(localStorage.getItem('sc-accounts')) : {};
-  const storedCookie = Object.keys(obj).find((user) => obj[user] === cookie);
-  if (storedCookie && username !== storedCookie) delete obj[storedCookie];
-  obj[username] = cookie;
-  localStorage.setItem('sc-accounts', JSON.stringify(obj));
-};
-
-const saveCurrentSession = () => {
-  const username = getCurrentUser();
-  chrome.runtime.sendMessage({ method: 'getCookie', data: { name: 'oauth_token' } }, (data) => {
-    const cookie = data ? data.value : null;
-    if (username && cookie) saveSession(username, cookie);
-  });
-};
 
 const switchSession = (user) => {
-  saveCurrentSession();
   chrome.runtime.sendMessage({ method: 'setCookie', data: { name: 'oauth_token', value: getSession(user) } }, () => {
     return parent.postMessage('_scam_reload', '*')
   });
@@ -77,7 +53,6 @@ const menuObserver = new MutationObserver(() => {
 const init = () => {
   const observerOptions = { childList: true, subtree: true };
   menuObserver.observe(document.body, observerOptions);
-  saveCurrentSession();
 };
 
 init();
