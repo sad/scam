@@ -27,7 +27,7 @@ const saveCurrentSession = () => {
 const switchSession = (user) => {
   saveCurrentSession();
   chrome.runtime.sendMessage({ method: 'setCookie', data: { name: 'oauth_token', value: getSession(user) } }, () => {
-    return parent ? parent.location.reload() : location.reload();
+    return parent.postMessage('_scam_reload', '*')
   });
 };
 

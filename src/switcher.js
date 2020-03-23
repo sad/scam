@@ -131,6 +131,14 @@ const menuObserver = new MutationObserver((mutations) => {
   }
 });
 
+window.addEventListener("message", (message) => {
+  const { origin, data } = message
+  if(!origin.endsWith('.soundcloud.com')) return;
+  if(data === '_scam_reload') {
+    window.location.reload();
+  }
+}, false);
+
 const init = () => {
   const observerOptions = { childList: true, subtree: true };
   menuObserver.observe(document.body, observerOptions);
