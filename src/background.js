@@ -4,7 +4,7 @@ emitter.addListener((request, sender, sendResponse) => {
   if (request.method === 'forceLogout') {
     chrome.cookies.remove({
       url: 'https://api-auth.soundcloud.com/connect/',
-      name: '_session_auth_key',
+      name: '_soundcloud_session',
     }, () => sendResponse(true));
   } else if (request.method === 'getCookie') {
     chrome.cookies.get({
@@ -45,7 +45,7 @@ emitter.addListener((request, sender, sendResponse) => {
     if (request.data && request.data.cookie) {
       chrome.cookies.set({
         url: 'https://api-auth.soundcloud.com/connect/',
-        name: '_session_auth_key',
+        name: '_soundcloud_session',
         value: request.data.cookie,
         secure: true,
         SameSiteStatus: 'no_restriction',
