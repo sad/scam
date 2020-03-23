@@ -32,7 +32,6 @@ const switchSession = (user) => {
 };
 
 const injectLoggedOutSwitcher = () => {
-  console.log('within iframe')
   if (localStorage.hasOwnProperty('sc-accounts')) {
     const publicSignIn = sel('.provider-buttons');
     const accounts = JSON.parse(localStorage.getItem('sc-accounts'));
@@ -68,20 +67,15 @@ const injectLoggedOutSwitcher = () => {
 };
 
 let isInjected = false;
-const menuObserver = new MutationObserver((mutations) => {
-  for (const mutation of mutations) {
-    const addedNodes = Array.from(mutation.addedNodes);
-    console.log(addedNodes)
-    if (sel('.provider-buttons') && !isInjected) {
-      isInjected = true;
-      injectLoggedOutSwitcher();
-    }
+const menuObserver = new MutationObserver(() => {
+  if (sel('.provider-buttons') && !isInjected) {
+    isInjected = true;
+    injectLoggedOutSwitcher();
   }
 });
 
 const init = () => {
   const observerOptions = { childList: true, subtree: true };
-  console.log(document.body)
   menuObserver.observe(document.body, observerOptions);
   saveCurrentSession();
 };
