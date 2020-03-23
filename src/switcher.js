@@ -122,45 +122,11 @@ const injectSwitcher = () => {
   }
 };
 
-const injectLoggedOutSwitcher = () => {
-  if (localStorage.hasOwnProperty('sc-accounts')) {
-    const publicSignIn = sel('.modal__modal .signinInitialStep__socialButtons');
-    const accounts = JSON.parse(localStorage.getItem('sc-accounts'));
-    const scamBtn = document.createElement('button');
-    const accountSelector = document.createElement('select');
-    scamBtn.setAttribute('class', 'signinForm__cta sc-button sc-button-large');
-    accountSelector.setAttribute('class', 'signinForm__cta sc-button sc-button-large');
-    scamBtn.innerText = 'Saved accounts';
-    publicSignIn.appendChild(scamBtn);
-    const firstOption = document.createElement('option');
-    firstOption.innerText = 'Accounts';
-    firstOption.disabled = true;
-    firstOption.selected = true;
-    accountSelector.appendChild(firstOption);
-    Object.keys(accounts).forEach((accountName) => {
-      const accountEl = document.createElement('option');
-      accountEl.value = accountName;
-      accountEl.innerText = accountName;
-      accountSelector.appendChild(accountEl);
-    });
-
-    scamBtn.onclick = () => {
-      scamBtn.parentNode.replaceChild(accountSelector, scamBtn);
-    };
-
-    accountSelector.onchange = () => {
-      switchSession(accountSelector.value);
-    };
-  }
-};
-
 const menuObserver = new MutationObserver((mutations) => {
   for (const mutation of mutations) {
     const addedNodes = Array.from(mutation.addedNodes);
     if (addedNodes.includes(sel('.dropdownMenu')) || addedNodes.includes(sel('.profileMenu__list'))) {
       injectSwitcher();
-    } else if (addedNodes.includes(sel('.modal__modal .signinForm'))) {
-      injectLoggedOutSwitcher();
     }
   }
 });

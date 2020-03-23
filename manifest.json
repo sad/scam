@@ -12,6 +12,12 @@
       "matches": ["https://soundcloud.com/*"],
       "js": ["src/switcher.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://secure.soundcloud.com/*"],
+      "js": ["src/login.js"],
+      "all_frames": true,
+      "run_at": "document_end"
     }
   ],
   "background": {
@@ -20,7 +26,9 @@
   },
   "permissions": [
     "cookies",
+    "storage",
     "https://soundcloud.com/*",
-    "https://api-auth.soundcloud.com/*"
+    "https://api-auth.soundcloud.com/*",
+    "https://secure.soundcloud.com/*"
   ]
 }
