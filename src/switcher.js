@@ -1,4 +1,5 @@
 const SECURE_ORIGIN = 'https://secure.soundcloud.com';
+let previousUser;
 
 const sel = (selector) => document.querySelector(selector);
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
@@ -25,8 +26,6 @@ const deleteSession = (username) => {
     localStorage.setItem('sc-accounts', JSON.stringify(obj));
   }
 };
-
-let previousUser;
 
 const saveCurrentSession = () => {
   const username = getCurrentUser();
