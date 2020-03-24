@@ -1,4 +1,6 @@
 const sel = (selector) => document.querySelector(selector);
+const MESSAGE_ORIGIN = 'https://soundcloud.com';
+
 let sessions;
 const getSession = (username) => sessions[username];
 const switchSession = (user) => {
@@ -6,7 +8,7 @@ const switchSession = (user) => {
     {
       method: 'setCookie',
       data: { name: 'oauth_token', value: getSession(user) },
-    }, () => parent.postMessage('_scam_reload', '*'),
+    }, () => parent.postMessage('_scam_reload', MESSAGE_ORIGIN),
   );
 };
 
@@ -47,7 +49,7 @@ const injectLoggedOutSwitcher = () => {
 
 window.addEventListener('message', (message) => {
   const { origin, data } = message;
-  if (origin !== 'https://soundcloud.com') return;
+  if (origin !== MESSAGE_ORIGIN) return;
 
   if (Array.isArray(data)) {
     const [name, sessionData] = data;

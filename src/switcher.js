@@ -1,3 +1,5 @@
+const SECURE_ORIGIN = 'https://secure.soundcloud.com';
+
 const sel = (selector) => document.querySelector(selector);
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
 const getCurrentUser = () => {
@@ -128,7 +130,7 @@ const injectSwitcher = () => {
 
 const passSessions = (element) => {
   const obj = localStorage.hasOwnProperty('sc-accounts') ? JSON.parse(localStorage.getItem('sc-accounts')) : {};
-  element.contentWindow.postMessage(['_scam_sessions', obj], '*');
+  element.contentWindow.postMessage(['_scam_sessions', obj], SECURE_ORIGIN);
 };
 
 const menuObserver = new MutationObserver((mutations) => {
@@ -154,7 +156,7 @@ const menuObserver = new MutationObserver((mutations) => {
 
 window.addEventListener('message', (message) => {
   const { origin, data } = message;
-  if (!origin.endsWith('.soundcloud.com')) return;
+  if (origin !== SECURE_ORIGIN) return;
 
   if (data === '_scam_reload') {
     window.location.reload(true);
