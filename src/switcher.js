@@ -24,11 +24,15 @@ const deleteSession = (username) => {
   }
 };
 
+let previousUser;
+
 const saveCurrentSession = () => {
   const username = getCurrentUser();
+  if (previousUser === username || !username) return;
+  previousUser = username;
   chrome.runtime.sendMessage({ method: 'getCookie', data: { name: 'oauth_token' } }, (data) => {
     const cookie = data ? data.value : null;
-    if (username && cookie) saveSession(username, cookie);
+    if (cookie) saveSession(username, cookie);
   });
 };
 
