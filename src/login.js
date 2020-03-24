@@ -2,7 +2,12 @@ const sel = (selector) => document.querySelector(selector);
 let sessions;
 const getSession = (username) => sessions[username];
 const switchSession = (user) => {
-  chrome.runtime.sendMessage({ method: 'setCookie', data: { name: 'oauth_token', value: getSession(user) } }, () => parent.postMessage('_scam_reload', '*'));
+  chrome.runtime.sendMessage(
+    {
+      method: 'setCookie',
+      data: { name: 'oauth_token', value: getSession(user) },
+    }, () => parent.postMessage('_scam_reload', '*'),
+  );
 };
 
 const injectLoggedOutSwitcher = () => {
