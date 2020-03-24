@@ -48,7 +48,7 @@ window.addEventListener('message', (message) => {
     const [name, sessionData] = data;
     if (name === '_scam_sessions') {
       sessions = sessionData;
+      injectLoggedOutSwitcher();
     }
-    injectLoggedOutSwitcher();
   }
 }, false);
