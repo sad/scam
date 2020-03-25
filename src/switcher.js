@@ -1,8 +1,11 @@
+const SECURE_ORIGIN = 'https://secure.soundcloud.com';
+let previousUser;
+
 const sel = (selector) => document.querySelector(selector);
 const getSession = (username) => JSON.parse(localStorage.getItem('sc-accounts'))[username];
 const getCurrentUser = () => {
   if (sel('.header__userNavUsernameButton') !== null) {
-    return sel('.header__userNavUsernameButton').href.replace('https://soundcloud.com/', '');
+    return new URL(sel('.header__userNavUsernameButton').href).pathname.substr(1);
   }
 
   return false;
@@ -26,9 +29,11 @@ const deleteSession = (username) => {
 
 const saveCurrentSession = () => {
   const username = getCurrentUser();
+  if (previousUser === username || !username) return;
+  previousUser = username;
   chrome.runtime.sendMessage({ method: 'getCookie', data: { name: 'oauth_token' } }, (data) => {
     const cookie = data ? data.value : null;
-    if (username && cookie) saveSession(username, cookie);
+    if (cookie) saveSession(username, cookie);
   });
 };
 
@@ -122,36 +127,9 @@ const injectSwitcher = () => {
   }
 };
 
-const injectLoggedOutSwitcher = () => {
-  if (localStorage.hasOwnProperty('sc-accounts')) {
-    const publicSignIn = sel('.modal__modal .signinInitialStep__socialButtons');
-    const accounts = JSON.parse(localStorage.getItem('sc-accounts'));
-    const scamBtn = document.createElement('button');
-    const accountSelector = document.createElement('select');
-    scamBtn.setAttribute('class', 'signinForm__cta sc-button sc-button-large');
-    accountSelector.setAttribute('class', 'signinForm__cta sc-button sc-button-large');
-    scamBtn.innerText = 'Saved accounts';
-    publicSignIn.appendChild(scamBtn);
-    const firstOption = document.createElement('option');
-    firstOption.innerText = 'Accounts';
-    firstOption.disabled = true;
-    firstOption.selected = true;
-    accountSelector.appendChild(firstOption);
-    Object.keys(accounts).forEach((accountName) => {
-      const accountEl = document.createElement('option');
-      accountEl.value = accountName;
-      accountEl.innerText = accountName;
-      accountSelector.appendChild(accountEl);
-    });
-
-    scamBtn.onclick = () => {
-      scamBtn.parentNode.replaceChild(accountSelector, scamBtn);
-    };
-
-    accountSelector.onchange = () => {
-      switchSession(accountSelector.value);
-    };
-  }
+const passSessions = (element) => {
+  const obj = localStorage.hasOwnProperty('sc-accounts') ? JSON.parse(localStorage.getItem('sc-accounts')) : {};
+  element.contentWindow.postMessage(['_scam_sessions', obj], SECURE_ORIGIN);
 };
 
 const menuObserver = new MutationObserver((mutations) => {
@@ -159,11 +137,30 @@ const menuObserver = new MutationObserver((mutations) => {
     const addedNodes = Array.from(mutation.addedNodes);
     if (addedNodes.includes(sel('.dropdownMenu')) || addedNodes.includes(sel('.profileMenu__list'))) {
       injectSwitcher();
-    } else if (addedNodes.includes(sel('.modal__modal .signinForm'))) {
-      injectLoggedOutSwitcher();
     }
+    if (mutation.target.classList && [...mutation.target.classList].includes('header__userNavUsernameButton')) {
+      saveCurrentSession();
+    }
+
+    addedNodes.forEach((node) => {
+      if (node.querySelector && node.querySelector('.webAuthContainer iframe')) {
+        const iframe = node.querySelector('.webAuthContainer iframe');
+        iframe.onload = () => {
+          passSessions(iframe);
+        };
+      }
+    });
   }
 });
+
+window.addEventListener('message', (message) => {
+  const { origin, data } = message;
+  if (origin !== SECURE_ORIGIN) return;
+
+  if (data === '_scam_reload') {
+    window.location.reload(true);
+  }
+}, false);
 
 const init = () => {
   const observerOptions = { childList: true, subtree: true };
