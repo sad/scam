@@ -60,9 +60,9 @@ const injectSwitcher = () => {
     list.setAttribute('class', 'profileMenu__list sc-list-nostyle');
 
     const addBtn = document.createElement('li');
-    addBtn.setAttribute('class', 'profileMenu__item');
+    addBtn.setAttribute('class', 'headerMenu__list');
     const addLink = document.createElement('a');
-    addLink.setAttribute('class', 'profileMenu__link profileMenu__friends');
+    addLink.setAttribute('class', 'headerMenu__link profileMenu__profile');
     addLink.innerText = 'Add Account';
     addLink.id = 'add-account';
     addLink.href = '#';
@@ -82,8 +82,8 @@ const injectSwitcher = () => {
       const li = document.createElement('li');
       const link = document.createElement('a');
 
-      li.setAttribute('class', 'profileMenu__item');
-      link.setAttribute('class', 'profileMenu__link profileMenu__profile');
+      li.setAttribute('class', 'headerMenu__item');
+      link.setAttribute('class', 'headerMenu__link profileMenu__profile');
       link.innerText = account;
       link.id = 'switch-account';
       link.dataset.user = account;
@@ -98,7 +98,7 @@ const injectSwitcher = () => {
 
       const delBtn = document.createElement('a');
 
-      delBtn.setAttribute('class', 'profileMenu__profile');
+      delBtn.setAttribute('class', 'headerMenu__profile');
       delBtn.innerHTML = '&times;';
       delBtn.id = 'delete-account';
       delBtn.dataset.user = account;
@@ -135,7 +135,7 @@ const passSessions = (element) => {
 const menuObserver = new MutationObserver((mutations) => {
   for (const mutation of mutations) {
     const addedNodes = Array.from(mutation.addedNodes);
-    if (addedNodes.includes(sel('.dropdownMenu')) || addedNodes.includes(sel('.profileMenu__list'))) {
+    if (addedNodes.includes(sel('.dropdownMenu')) || addedNodes.includes(sel('.headerMenu__list'))) {
       injectSwitcher();
     }
     if (mutation.target.classList && [...mutation.target.classList].includes('header__userNavUsernameButton')) {
