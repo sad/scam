@@ -177,10 +177,10 @@ window.addEventListener('message', (message) => {
 const init = () => {
   // Migrate from old user sessions format
   const sessions = localStorage.hasOwnProperty('sc-accounts') ? JSON.parse(localStorage.getItem('sc-accounts')) : {};
-  Object.keys(sessions).forEach(username => {
-    if (typeof sessions[username] === 'string') sessions[username] = { cookie: sessions[username] }
-  })
-  localStorage.setItem('sc-accounts', JSON.stringify(sessions))
+  Object.keys(sessions).forEach((username) => {
+    if (typeof sessions[username] === 'string') sessions[username] = { cookie: sessions[username] };
+  });
+  localStorage.setItem('sc-accounts', JSON.stringify(sessions));
 
   const observerOptions = { childList: true, subtree: true };
   menuObserver.observe(document.body, observerOptions);
