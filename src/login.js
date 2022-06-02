@@ -7,7 +7,7 @@ const switchSession = (user) => {
   chrome.runtime.sendMessage(
     {
       method: 'setCookie',
-      data: { name: 'oauth_token', value: getSession(user) },
+      data: { name: 'oauth_token', value: getSession(user).cookie },
     }, () => parent.postMessage('_scam_reload', MESSAGE_ORIGIN),
   );
 };
@@ -52,9 +52,9 @@ window.addEventListener('message', (message) => {
   if (origin !== MESSAGE_ORIGIN) return;
 
   if (Array.isArray(data)) {
-    const [name, sessionData] = data;
+    const [name, sessionsData] = data;
     if (name === '_scam_sessions') {
-      sessions = sessionData;
+      sessions = sessionsData;
       injectLoggedOutSwitcher();
     }
   }
