@@ -1,4 +1,4 @@
-const emitter = chrome.extension.onMessage ? chrome.extension.onMessage : browser.runtime.onMessage;
+const emitter = chrome.runtime.onMessage ?? browser.runtime.onMessage;
 
 emitter.addListener((request, sender, sendResponse) => {
   if (request.method === 'forceLogout') {
