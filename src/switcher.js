@@ -29,6 +29,7 @@ const deleteSession = (username) => {
 
 const saveCurrentSession = () => {
   const username = getCurrentUser();
+  if (username === false) return;
 
   const sessionData = getSession(username) || {};
   sessionData.notifyState = localStorage.getItem('V2::local::notify');
